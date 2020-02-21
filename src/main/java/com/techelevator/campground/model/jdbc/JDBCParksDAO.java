@@ -10,6 +10,7 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 import com.techelevator.campground.model.ParkDAO;
 import com.techelevator.campground.model.Parks;
+import com.techelevator.campground.model.Reservation;
 
 public class JDBCParksDAO implements ParkDAO {
 
@@ -20,18 +21,27 @@ public class JDBCParksDAO implements ParkDAO {
 	}
 
 	@Override
-	public List<Parks> getAllParks() {
-		ArrayList<Parks> myParks = new ArrayList<>();
-		String sqlFindParks = "SELECT * FROM park ORDER BY name ASC";
-
-		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlFindParks);
+	public List<Parks> getParksNames() {
+		ArrayList<Parks> parksNamesList = new ArrayList<>();
+		String parksNames = "SELECT * FROM park ORDER BY name ASC";
+		SqlRowSet results = jdbcTemplate.queryForRowSet(parksNames);
 		while (results.next()) {
 			Parks allParks = mapRowToParks(results);
-			myParks.add(allParks);
+			parksNamesList.add(allParks);
 		}
+		return parksNamesList;
+	}
 
-		return myParks;
-
+	@Override
+	public Parks getParkInfoById(long parkId) {
+		
+		Parks thePark = null;
+		String sqlParkInfo = "SELECT * FROM reservation WHERE = ?";
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlParkInfo, parkId);
+		if (results.next()) {
+			thePark = mapRowToParks(results);
+		}
+		return thePark;
 	}
 
 	@Override
@@ -39,7 +49,7 @@ public class JDBCParksDAO implements ParkDAO {
 		ArrayList<Parks> searches = new ArrayList<>();
 		String sqlsearchParks = "SELECT * FROM Park WHERE name ILIKE ?";
 
-		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlsearchParks, '%' +nameSearch + '%');
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlsearchParks, '%' + nameSearch + '%');
 		while (results.next()) {
 			Parks parkSearches = mapRowToParks(results);
 			searches.add(parkSearches);
@@ -55,7 +65,7 @@ public class JDBCParksDAO implements ParkDAO {
 		ArrayList<Parks> searches = new ArrayList<>();
 		String sqlsearchLocations = "SELECT * FROM Park WHERE location ILIKE ?";
 
-		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlsearchLocations, + '%' + locationSearch + '%');
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlsearchLocations, +'%' + locationSearch + '%');
 		while (results.next()) {
 			Parks searchLocations = mapRowToParks(results);
 			searches.add(searchLocations);
@@ -74,7 +84,5 @@ public class JDBCParksDAO implements ParkDAO {
 		return allParks;
 
 	}
-
-
 
 }
