@@ -52,7 +52,19 @@ public class JDBCCampgroundDAO implements CampgroundDAO {
 		return campListByName;
 	}
 
+<<<<<<< HEAD
+	@Override
+	public List<Campground> searchCampgroundsOpenInRange(String openFrom, String openTo) {
+
+		List<Campground> openCampsList = new ArrayList<Campground>();
+
+		String sqlFindOpenCamps = "SELECT * FROM campground WHERE  ";
+
+		return openCampsList;
+	}
+=======
 	
+>>>>>>> 15de7750875174f07c1df38b61d906ae49e411c7
 
 	private Campground mapRowToCampground(SqlRowSet results) {
 		Campground campgroundtInMapRow = new Campground();
