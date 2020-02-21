@@ -14,7 +14,7 @@ public interface ParkDAO {
 	// get all parks that have a name that contains the search string.
 	// return all matching parks as Parks objects in a list
 
-	public List<Parks> searchParksByLocation();
+	public List<Parks> searchParksByLocation(String locationSearch);
 
 	// get all parks that have a location that contains the search string.
 	// return all matching locations as Parks in a list.

@@ -54,11 +54,11 @@ public class JDBCCampgroundDAO implements CampgroundDAO {
 
 	@Override
 	public List<Campground> searchCampgroundsOpenInRange(String openFrom, String openTo) {
-		
+
 		List<Campground> openCampsList = new ArrayList<Campground>();
-		
-		String sqlFindOpenCamps = "SELECT * FROM campground WHERE  "
-		
+
+		String sqlFindOpenCamps = "SELECT * FROM campground WHERE  ";
+
 		return openCampsList;
 	}
 

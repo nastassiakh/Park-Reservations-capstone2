@@ -22,7 +22,7 @@ public class JDBCParksDAO implements ParkDAO {
 	@Override
 	public List<Parks> getAllParks() {
 		ArrayList<Parks> myParks = new ArrayList<>();
-		String sqlFindParks = "SELECT * FROM park";
+		String sqlFindParks = "SELECT * FROM park ORDER BY name ASC";
 
 		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlFindParks);
 		while (results.next()) {
@@ -39,7 +39,7 @@ public class JDBCParksDAO implements ParkDAO {
 		ArrayList<Parks> searches = new ArrayList<>();
 		String sqlsearchParks = "SELECT * FROM Park WHERE name ILIKE ?";
 
-		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlsearchParks, nameSearch);
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlsearchParks, '%' +nameSearch + '%');
 		while (results.next()) {
 			Parks parkSearches = mapRowToParks(results);
 			searches.add(parkSearches);
@@ -55,7 +55,7 @@ public class JDBCParksDAO implements ParkDAO {
 		ArrayList<Parks> searches = new ArrayList<>();
 		String sqlsearchLocations = "SELECT * FROM Park WHERE location ILIKE ?";
 
-		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlsearchLocations, locationSearch);
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlsearchLocations, + '%' + locationSearch + '%');
 		while (results.next()) {
 			Parks searchLocations = mapRowToParks(results);
 			searches.add(searchLocations);
