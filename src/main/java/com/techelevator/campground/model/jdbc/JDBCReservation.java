@@ -63,8 +63,28 @@ public class JDBCReservation implements ReservationDAO{
 
 	@Override
 	public List<Reservation> getAvailableReservaonsOnGivenSite(Long siteId, LocalDate fromDate, LocalDate toDate) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Reservation> availableReservationsList = new ArrayList<>();
+		
+		String sqlAvailableReservationsAllSeasons = "SELECT * FROM campground JOIN site ON campground.campground_id = site.campground_id "
+		+ "JOIN reservation ON reservation.site_id = site.site_id "
+		+ "WHERE site.campground_id = ?  AND (? > reservation.to_date AND ? > reservation.to_date) "
+		+ "OR (? < reservation.from_date AND ? < reservation.from_date) "
+		+ "LIMIT 5";
+		
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlAvailableReservationsAllSeasons, siteId, fromDate, toDate, toDate, fromDate );
+
+		while (results.next()) {
+			Reservation foundAvailableReservationsAllYear = mapRowToReservation(results);
+			availableReservationsList.add(foundAvailableReservationsAllYear);
+		}
+		
+		
+		
+		/*
+		 * String sql2 = "SELECT campgroung_id, park_id from campground" +
+		 * "WHERE park_id = 1 AND campround_id  = 1" + "AND open_from_mm ;
+		 */
+		return availableReservationsList;
 	}
 	
 	private Reservation mapRowToReservation(SqlRowSet results) {

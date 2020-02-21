@@ -4,16 +4,22 @@ import javax.sql.DataSource;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 
+import com.techelevator.campground.menue.Menue;
 import com.techelevator.campground.model.CampgroundDAO;
+import com.techelevator.campground.model.ParkDAO;
+import com.techelevator.campground.model.Parks;
 import com.techelevator.campground.model.Reservation;
 import com.techelevator.campground.model.ReservationDAO;
 import com.techelevator.campground.model.jdbc.JDBCCampgroundDAO;
+import com.techelevator.campground.model.jdbc.JDBCParksDAO;
 import com.techelevator.campground.model.jdbc.JDBCReservation;
 
 public class CampgroundCLI {
 
 	CampgroundDAO c;
 	ReservationDAO res;
+	ParkDAO park;
+	Menue menue;
 
 	public static void main(String[] args) {
 		CampgroundCLI application = new CampgroundCLI();
@@ -30,18 +36,29 @@ public class CampgroundCLI {
 		dataSource.setPassword("postgres1");
 		c = new JDBCCampgroundDAO(dataSource);
 		res = new JDBCReservation(dataSource);
+		park = new JDBCParksDAO(dataSource);
+		menue = new Menue();
 
 	}
+
 
 	public void run() {
-		findReservationById();
-		getAllCampgroundsInPark();
-		printAllReservationsBySiteId();
-		findReservationByName();
-	}
 
+		park.getParksNames();
+		
+		for (Parks p : park.getParksNames()) {
+			System.out.println(p.getParkId() +" " + p.getName());
+		}
+		System.out.println("");
+		
+		menue.getParkIdFromUser();
+		
+		String userInputParkId = menue.getParkIdFromUser();
 	
-	
+        park.getParkInfoById(Long.parseLong(userInputParkId));
+			
+		}
+
 	
 	public void getAllCampgroundsInPark() {
 		System.out.println(c.getAllCampgroundsInPark((long) 1).get(0).getCampgroundId());
@@ -66,7 +83,15 @@ public class CampgroundCLI {
 			System.out.println(r.getReservationId());
 
 		}
-		//System.out.println(res.findReservationByName(nameOfPerson).get(0).getReservationId());
 	}
+	// System.out.println(res.findReservationByName(nameOfPerson).get(0).getReservationId());
 
+	public void findCampgrundByNAme() {
+		String campgroundName = "";
+
+		if (campgroundName != null && campgroundName == "Seawall") {
+
+			System.out.println(c.searchCampgroundByName(campgroundName));
+		}
+	}
 }
