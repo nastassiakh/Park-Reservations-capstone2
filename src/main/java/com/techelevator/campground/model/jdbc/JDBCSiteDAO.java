@@ -39,15 +39,15 @@ public class JDBCSiteDAO implements SiteDAO {
 	}
 
 	@Override
-	public List<Site> searchAvailableUtilities(boolean availableUtilities) {
+	public List<Site> searchAvailableUtilities() {
 		ArrayList<Site> myUtilities = new ArrayList<>();
 		String sqlFindSitesWithWantedUtilities = "SELECT * FROM site WHERE utilities = true";
 //		if (availableUtilities) {
 //			sqlFindSitesWithWantedUtilities += "WHERE availableUtilities = true";
 
-			SqlRowSet results = jdbcTemplate.queryForRowSet(sqlFindSitesWithWantedUtilities);
-			Site availbleSitesWithUtilities = mapRowToSite(results);
-			myUtilities.add(availbleSitesWithUtilities);
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlFindSitesWithWantedUtilities);
+		Site availbleSitesWithUtilities = mapRowToSite(results);
+		myUtilities.add(availbleSitesWithUtilities);
 
 		return myUtilities;
 	}
@@ -55,7 +55,7 @@ public class JDBCSiteDAO implements SiteDAO {
 	@Override
 	public List<Site> searchByRvLength(long maxLength) {
 		ArrayList<Site> checkRvLength = new ArrayList<>();
-		String sqlFindForMyRv = "SELECT * FROM site WHERE max_rv_length = ?";
+		String sqlFindForMyRv = "SELECT * FROM site WHERE max_rv_length >= ?";
 
 		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlFindForMyRv);
 		Site availableSitesFOrMyRv = mapRowToSite(results);

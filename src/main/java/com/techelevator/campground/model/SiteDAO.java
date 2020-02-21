@@ -10,7 +10,7 @@ public interface SiteDAO {
 	
 	//this will return a list of handicapped accessible sites if true//
 	
-	public List <Site> searchAvailableUtilities (boolean availableUtilities);
+	public List <Site> searchAvailableUtilities ();
 	
 	//this will return a list of sites availble by utilities searched are available on camp sites
 	
