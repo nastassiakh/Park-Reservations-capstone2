@@ -23,7 +23,7 @@ public class JDBCCampgroundDAO implements CampgroundDAO {
 	public List<Campground> getAllCampgroundsInPark(Long parkId) {
 
 		List<Campground> allCampgroundsList = new ArrayList<>();
-		String sqlGetCampgroundsInPark = "SELECT * FROM campground WHERE campground_id = ?";
+		String sqlGetCampgroundsInPark = "SELECT * FROM campground WHERE park_id = ?";
 		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlGetCampgroundsInPark, parkId);
 		while (results.next()) {
 			Campground foundCampground = mapRowToCampground(results);
@@ -39,10 +39,10 @@ public class JDBCCampgroundDAO implements CampgroundDAO {
 		List<Campground> campListByName = new ArrayList<Campground>();
 
 		String sqlFindCampByName = "SELECT * FROM campground WHERE name ILIKE ?";
-		// string that takes all columns from department table
+	
 		campgroundName = "%" + campgroundName + "%";
 
-		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlFindCampByName, campgroundName); // template
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlFindCampByName, campgroundName); 
 
 		while (results.next()) {
 			Campground campground = new Campground();
@@ -52,6 +52,7 @@ public class JDBCCampgroundDAO implements CampgroundDAO {
 		return campListByName;
 	}
 
+<<<<<<< HEAD
 	@Override
 	public List<Campground> searchCampgroundsOpenInRange(String openFrom, String openTo) {
 
@@ -61,6 +62,9 @@ public class JDBCCampgroundDAO implements CampgroundDAO {
 
 		return openCampsList;
 	}
+=======
+	
+>>>>>>> 15de7750875174f07c1df38b61d906ae49e411c7
 
 	private Campground mapRowToCampground(SqlRowSet results) {
 		Campground campgroundtInMapRow = new Campground();

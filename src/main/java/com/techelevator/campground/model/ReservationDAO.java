@@ -10,13 +10,13 @@ public interface ReservationDAO {
 	public List<Reservation> getReservatinsBySiteId(Long siteId);
  
 	//find reservation  by given id
-	public List<Reservation> getReservationById(Long reservationId);
+	public Reservation findReservationById(Long reservationId);
 	
 	
 	/*find reservation  by given name If a search string is blank,
 	 * ignore it. Be sure to use LIKE or ILIKE for proper search matching!
 	 */
-	public List<Reservation> getReservationById(String nameOfPerson);
+	public List<Reservation> findReservationByName(String nameOfPerson);
 	
 	
 	
