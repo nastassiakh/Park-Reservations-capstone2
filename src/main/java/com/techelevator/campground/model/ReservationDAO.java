@@ -21,7 +21,7 @@ public interface ReservationDAO {
 	
 	
 	/* find reservations by given campgrondId WHERE fromDate  */
-	public List<Reservation> getAvailableReservaonsOnGivenSite(Long siteId, LocalDate fromDate, LocalDate toDate);
+	public List<Site> getAvailableReservaonsOnGivenSite(Long campgroundId, LocalDate fromDate, LocalDate toDate);
 	
 	
 	

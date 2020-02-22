@@ -36,12 +36,15 @@ public class JDBCParksDAO implements ParkDAO {
 	public Parks getParkInfoById(long parkId) {
 		
 		Parks thePark = null;
-		String sqlParkInfo = "SELECT * FROM reservation WHERE = ?";
+		String sqlParkInfo = "SELECT * FROM park WHERE park_id = ?";
 		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlParkInfo, parkId);
-		if (results.next()) {
+		while
+			(results.next()) {
 			thePark = mapRowToParks(results);
 		}
 		return thePark;
+		
+		
 	}
 
 	@Override
@@ -80,6 +83,10 @@ public class JDBCParksDAO implements ParkDAO {
 		allParks.setParkId(results.getLong("park_id"));
 		allParks.setName(results.getString("name"));
 		allParks.setLocation(results.getString("location"));
+		allParks.setDescription(results.getString("description"));
+		allParks.setVisitors(results.getLong("visitors"));
+		allParks.setArea(results.getLong("area"));
+		allParks.setEstabishedDate(results.getDate("establish_date"));
 
 		return allParks;
 
