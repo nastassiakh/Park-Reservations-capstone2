@@ -64,7 +64,7 @@ public class JDBCReservation implements ReservationDAO {
 	@Override
 	public List<Reservation> getAvailableReservaonsOnGivenSite(Long siteId, LocalDate fromDate, LocalDate toDate) {
 	ArrayList<Reservation> availbleReservations = new ArrayList<>();
-	String sqlGetAvailbleReservations = "SELECT site.site_id, campground.name "
+	String sqlGetAvailbleReservations = "SELECT site.site_id, site.campground_id, site.site_number, site.max_occupancy, site.accessible, site.max_rv_length, site.utilities, campground.daily_fee "
 			+ "FROM campground "
 			+ "JOIN site ON campground.campground_id = site.campground_id "
 			+ "LEFT JOIN reservation ON reservation.site_id = site.site_id"
