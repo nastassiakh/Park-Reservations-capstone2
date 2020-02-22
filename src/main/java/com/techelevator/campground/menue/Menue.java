@@ -15,12 +15,19 @@ public class Menue {
 	public String getSecondChoiceFromUser() {
 
 		System.out.println("Please, Select a Command");
+		System.out.println("1) View Campgrounds");
+		System.out.println("2) Search for Reservation");
+		System.out.println("3) Return to previous Screen");
 		String userInputCommand = scan.nextLine();
 		return userInputCommand;
 	}
 
 	public String getUserChoiceForReservation() {
 		System.out.println("Please, Select a Command");
+		System.out.println("1) Search for Available Reservation");
+		System.out.println("2) Return to previous Screen");
+		
+		
 		String userInputReservSearch = scan.nextLine();
 		return userInputReservSearch;
 	}
@@ -29,6 +36,12 @@ public class Menue {
 
 		System.out.println("Enter code of the campground you are interesed in (ex.1), enter 0 to cancel");
 		String campgroundId = scan.nextLine();
+
+		if(campgroundId.contentEquals("0")) {
+	
+			System.out.println("Thank you for using our web site!");
+			System.exit(1);
+		}
 		return campgroundId;
 	}
 
