@@ -8,7 +8,16 @@ public class Site {
 	private long maxOccupancy;
 	private boolean accessible;
 	private long maxRvLength;
-	public boolean utilities;
+	private boolean utilities;
+	private double cost;
+	
+	
+	public double getCost() {
+		return cost;
+	}
+	public void setCost(double cost) {
+		this.cost = cost;
+	}
 	public long getSiteId() {
 		return siteId;
 	}
