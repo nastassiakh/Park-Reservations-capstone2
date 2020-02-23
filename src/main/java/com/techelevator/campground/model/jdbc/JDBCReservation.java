@@ -13,7 +13,6 @@ import com.techelevator.campground.model.Reservation;
 import com.techelevator.campground.model.ReservationDAO;
 import com.techelevator.campground.model.Site;
 
-
 public class JDBCReservation implements ReservationDAO {
 
 	private JdbcTemplate jdbcTemplate;
@@ -88,24 +87,14 @@ public class JDBCReservation implements ReservationDAO {
 //								+ "ORDER BY site.site_id, campground.name "
 //								+ "LIMIT 5) ";
 
-		String sqlGetAvailbleReservations = "SELECT site_id, site_number, daily_fee "+
-											"FROM campground "+
-											"JOIN site USING (campground_id) "+
-											"LEFT JOIN reservation USING (site_id) "+
-											"WHERE campground_id = ? AND site_id NOT IN ( "+
-											"SELECT site_id "+
-											"FROM campground "+
-											"JOIN site USING (campground_id) "+
-											"LEFT JOIN reservation USING (site_id) "+
-											"WHERE campground_id = ? AND (? "+
-											"BETWEEN from_date AND to_date "+
-											"OR ? BETWEEN from_date AND to_date "+
-											"OR (? < from_date AND ? > to_date))) "+
-											"GROUP BY site_id, site_number, daily_fee "+
-											"LIMIT 5";
-		
-		
-		
+		String sqlGetAvailbleReservations = "SELECT site_id, site_number, daily_fee " + "FROM campground "
+				+ "JOIN site USING (campground_id) " + "LEFT JOIN reservation USING (site_id) "
+				+ "WHERE campground_id = ? AND site_id NOT IN ( " + "SELECT site_id " + "FROM campground "
+				+ "JOIN site USING (campground_id) " + "LEFT JOIN reservation USING (site_id) "
+				+ "WHERE campground_id = ? AND (? " + "BETWEEN from_date AND to_date "
+				+ "OR ? BETWEEN from_date AND to_date " + "OR (? < from_date AND ? > to_date))) "
+				+ "GROUP BY site_id, site_number, daily_fee " + "LIMIT 5";
+
 //		String a = "SELECT site.site_number, site.max_occupancy, site.accessible, site.max_rv_length, site.utilities, campground.daily_fee\n"
 //				+ "FROM campground\n" + "JOIN site ON campground.campground_id = site.campground_id\n"
 //				+ "LEFT JOIN reservation ON reservation.site_id = site.site_id\n"
@@ -118,15 +107,14 @@ public class JDBCReservation implements ReservationDAO {
 //				+ "JOIN reservation ON reservation.site_id = site.site_id\n" + "WHERE site.campground_id = 1\n"
 //				+ "AND ('2020/02/08' >= reservation.from_date AND '2020/02/08' <= reservation.to_date)\n"
 //				+ "OR ('2020/02/14' >= reservation.from_date AND '2020/02/14' <= reservation.to_date)))\n" + "\n"
-		
-		
-		
+
 //				+ "order by site.site_id, campground.name LIMIT 5; ";
 
-		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlGetAvailbleReservations, campgroundId,  campgroundId, fromDate, toDate,fromDate, toDate);
-																					// campgroundId, fromDate, toDate,
-																					// campgroundId,fromDate, fromDate,
-																					// toDate, toDate );
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlGetAvailbleReservations, campgroundId, campgroundId,
+				fromDate, toDate, fromDate, toDate);
+		// campgroundId, fromDate, toDate,
+		// campgroundId,fromDate, fromDate,
+		// toDate, toDate );
 		while (results.next()) {
 			Site allSites = mapRowToSite(results);
 			availbleReservations.add(allSites);
@@ -139,7 +127,8 @@ public class JDBCReservation implements ReservationDAO {
 	 * @Override public Reservation makeReservation(Reseravation object ) {
 	 * Reservation res = new Reservation();
 	 * 
-	 * String sqlGetNextId = "SELECT nextval('seq_reservation_id')"; SqlRowSet
+	 * String sqlGetNextId = "SELECT nextval('seq_reservation_id')"; 
+	 * SqlRowSet
 	 * results = jdbcTemplate.queryForRowSet(sqlGetNextId); results.next(); //
 	 * advances to the first row int id = results.getInt(1); // returns the integer
 	 * value of the first column of table (i.e. index 1)
