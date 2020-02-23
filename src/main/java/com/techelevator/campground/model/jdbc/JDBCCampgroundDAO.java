@@ -21,6 +21,8 @@ public class JDBCCampgroundDAO implements CampgroundDAO {
 
 	@Override
 	public List<Campground> getAllCampgroundsInPark(Long parkId) {
+		
+		//we are getting a list of camp grounds in parks
 
 		List<Campground> allCampgroundsList = new ArrayList<>();
 		String sqlGetCampgroundsInPark = "SELECT * FROM campground WHERE park_id = ?";
@@ -35,6 +37,8 @@ public class JDBCCampgroundDAO implements CampgroundDAO {
 
 	@Override
 	public List<Campground> searchCampgroundByName(String campgroundName) {
+		
+		//this will allow a camp ground to be  searched by names
 
 		List<Campground> campListByName = new ArrayList<Campground>();
 
@@ -53,6 +57,7 @@ public class JDBCCampgroundDAO implements CampgroundDAO {
 	}
 
 	
+
 
 
 	private Campground mapRowToCampground(SqlRowSet results) {

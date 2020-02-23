@@ -20,6 +20,8 @@ public class JDBCParksDAO implements ParkDAO {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
+	//this will return a list of parks and order it in alphabetical order. 
+	
 	@Override
 	public List<Parks> getParksNames() {
 		ArrayList<Parks> parksNamesList = new ArrayList<>();
@@ -32,6 +34,9 @@ public class JDBCParksDAO implements ParkDAO {
 		return parksNamesList;
 	}
 
+	//this method will allow us to get infomration on the by selecting 
+	//the corresponding parkId 
+	
 	@Override
 	public Parks getParkInfoById(long parkId) {
 		
@@ -46,6 +51,10 @@ public class JDBCParksDAO implements ParkDAO {
 		
 		
 	}
+	
+	//this will return a list of parks given a search be name, 
+	//we used thew wild card because you  might want the park to contain a certian word 
+	//while searching for specific parks. 
 
 	@Override
 	public List<Parks> searchParksByName(String nameSearch) {
@@ -61,6 +70,8 @@ public class JDBCParksDAO implements ParkDAO {
 		return searches;
 
 	}
+	
+	//this will return a list of parks by location 
 
 	@Override
 	public List<Parks> searchParksByLocation(String locationSearch) {

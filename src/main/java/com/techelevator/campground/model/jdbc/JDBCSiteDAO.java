@@ -19,6 +19,9 @@ public class JDBCSiteDAO implements SiteDAO {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
+	//this will search for if a site is handicapped accessible.
+	//we ONLY care about if its handicapped accessible if the user needs it to be 
+	
 	@Override
 	public List<Site> searchHandicappedAccessible() {
 		ArrayList<Site> myHandicappedSites = new ArrayList<>();
@@ -37,6 +40,7 @@ public class JDBCSiteDAO implements SiteDAO {
 		}
 		return myHandicappedSites;
 	}
+	
 
 	@Override
 	public List<Site> searchAvailableUtilities() {

@@ -25,6 +25,8 @@ public interface ReservationDAO {
 	
 	
 	
+	/* create a new reservation */
+	public Reservation createReservation (Reservation newReservation);
 		
 	
 
