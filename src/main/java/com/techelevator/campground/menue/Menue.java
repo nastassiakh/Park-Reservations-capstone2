@@ -47,14 +47,14 @@ public class Menue {
 
 	public String getArrivalDateFromUser() {
 
-		System.out.println("What is the arrival date (YYYY/MM/DD)?");
+		System.out.println("What is the arrival date (YYYY-MM-DD)?");
 		String fromDate = scan.nextLine();
 		return fromDate;
 	}
 	
 	public String getDepartureDateFromUser() {
 
-		System.out.println("What is the departure date (YYYY/MM/DD)?");
+		System.out.println("What is the departure date (YYYY-MM-DD)?");
 		String toDate = scan.nextLine();
 		return toDate;
 	}
