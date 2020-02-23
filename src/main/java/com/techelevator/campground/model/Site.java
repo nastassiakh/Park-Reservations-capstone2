@@ -12,6 +12,7 @@ public class Site {
 	private double cost;
 	
 	
+	
 	public double getCost() {
 		return cost;
 	}

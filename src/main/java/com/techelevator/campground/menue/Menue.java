@@ -8,8 +8,10 @@ public class Menue {
 	public String getParkIdFromUser() {
 
 		System.out.println("Please, print code of the Park for Further Detail (ex.1)");
-		String userInputParkId = scan.nextLine();
-		return userInputParkId;
+		String userInputString;
+		userInputString = scan.nextLine();
+		return userInputString;
+		
 	}
 
 	public String getSecondChoiceFromUser() {
@@ -68,9 +70,11 @@ public class Menue {
 	
 	public String getNameOfUser() {
 
-		System.out.println("Which site should be reserved?");
+		System.out.println("Which name should the reservation be made under?");
 		String nameOfPerson = scan.nextLine();
 		return nameOfPerson;
 	}
+	
+	
 	
 }

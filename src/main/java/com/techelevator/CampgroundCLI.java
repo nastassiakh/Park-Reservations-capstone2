@@ -50,7 +50,6 @@ public class CampgroundCLI {
 		while (true) {
 
 			// 1.print all National Parks by Name 2.Ask user and print
-			// getParkInfo();
 
 			System.out.println("National Parks: ");
 			park.getParksNames();
@@ -60,60 +59,175 @@ public class CampgroundCLI {
 			}
 			System.out.println("");
 
-			userInputParkId = menue.getParkIdFromUser();
-			System.out.println(park.getParkInfoById(Long.parseLong(userInputParkId)).getName() + " National Park");
-			System.out.println("Location: " + park.getParkInfoById(Long.parseLong(userInputParkId)).getLocation());
-			System.out.println(
-					"Established " + park.getParkInfoById(Long.parseLong(userInputParkId)).getEstabishedDate());
-			System.out.println("Area: " + park.getParkInfoById(Long.parseLong(userInputParkId)).getArea());
-			System.out
-					.println("Annual Visitors " + park.getParkInfoById(Long.parseLong(userInputParkId)).getVisitors());
-			System.out.println("");
-			System.out.println(park.getParkInfoById(Long.parseLong(userInputParkId)).getDescription());
-			System.out.println("");
+			String userInputParkId = menue.getParkIdFromUser();
 
-			// Ask user next step
-			String userInputCommand = menue.getSecondChoiceFromUser();
+			if (!userInputParkId.contentEquals("1") && !userInputParkId.contentEquals("2")
+					&& !userInputParkId.contentEquals("3")) {
 
-			while (true) {
+				System.out.println("Please, enter valid input.");
 
-				// print all campgrounds info in Park
-				if (userInputCommand.contentEquals("1")) {
+			} else {
+				// print park info
+				System.out.println(park.getParkInfoById(Long.parseLong(userInputParkId)).getName() + " National Park");
+				System.out.println("Location: " + park.getParkInfoById(Long.parseLong(userInputParkId)).getLocation());
+				System.out.println(
+						"Established " + park.getParkInfoById(Long.parseLong(userInputParkId)).getEstabishedDate());
+				System.out.println("Area: " + park.getParkInfoById(Long.parseLong(userInputParkId)).getArea());
+				System.out.println(
+						"Annual Visitors " + park.getParkInfoById(Long.parseLong(userInputParkId)).getVisitors());
+				System.out.println("");
+				System.out.println(park.getParkInfoById(Long.parseLong(userInputParkId)).getDescription());
+				System.out.println("");
 
-					camp.getAllCampgroundsInPark(Long.parseLong(userInputParkId));
+				// Ask user next step
+				String userInputCommand = menue.getSecondChoiceFromUser();
 
-					System.out.println("     Name " + "  Open " + "Close" + " Daily Fee");
-					for (Campground c : camp.getAllCampgroundsInPark(Long.parseLong(userInputParkId))) {
-						System.out.println("#" + c.getCampgroundId() + " " + c.getCampgroundName() + " "
-								+ c.getOpenFrom() + " " + c.getOpenTo() + "    " + c.getDailyFee());
-					}
-					System.out.println("");
+				while (true) {
 
-					// reservations
-					String userChoice = menue.getUserChoiceForReservation();
+					// print all campgrounds info in Park
+					if (userInputCommand.contentEquals("1")) {
 
-					if (userChoice.contentEquals("1")) {
+						camp.getAllCampgroundsInPark(Long.parseLong(userInputParkId));
+
+						System.out.println("     Name " + "  Open " + "Close" + " Daily Fee");
+						for (Campground c : camp.getAllCampgroundsInPark(Long.parseLong(userInputParkId))) {
+							System.out.println("#" + c.getCampgroundId() + " " + c.getCampgroundName() + " "
+									+ c.getOpenFrom() + " " + c.getOpenTo() + "    " + c.getDailyFee());
+						}
+						System.out.println("");
+
+						// reservations questions to user
+						String userChoice = menue.getUserChoiceForReservation();
+
+						if (userChoice.contentEquals("1")) {
+							// findAvailableReservations();
+							String userInputCampId = menue.getCampgroundIdFromUser();
+							String arrDate = menue.getArrivalDateFromUser();
+							String deptDate = menue.getDepartureDateFromUser();
+
+							// parsing user Input
+							Long campgroundId = Long.parseLong(userInputCampId);
+							LocalDate fromDate = LocalDate.parse(arrDate);
+							LocalDate toDate = LocalDate.parse(deptDate);
+							;
+
+							// LocalDate fromDate = LocalDate.of(2020, 03, 05);
+							// LocalDate toDate = LocalDate.of(2020, 03, 18);
+
+							System.out.println("**************************");
+							System.out.println("Site Id" + "  Site # " + " Daily Fee");
+							System.out.println("**************************");
+							for (Site s : res.getAvailableReservaonsOnGivenSite(campgroundId, fromDate, toDate)) {
+								System.out.println(
+										s.getSiteId() + "         " + s.getSiteNumber() + "         " + s.getCost());
+
+								/*
+								 * s.getMaxOccupancy() + "  " + s.isAccessible() + " " + s.getMaxRvLength() +
+								 * "  " + s.isUtilities() + " $" + s.getCost());
+								 */
+							}
+							
+							System.out.println("");
+						
+
+							// make reservation
+							String siteIdFromUser = menue.getSiteIdFromUser();
+							Long siteId = Long.parseLong(siteIdFromUser);
+							String nameOfPerson = menue.getNameOfUser();
+
+							LocalDate createDate = LocalDate.now();
+
+							Reservation newReservation = new Reservation();
+
+							 newReservation.setSiteId(siteId);
+							 newReservation.setNameOfPerson(nameOfPerson);
+							 newReservation.setFromDate(fromDate); newReservation.setToDate(toDate);
+							 newReservation.setCreateDate(createDate);
+							
+							res.createReservation(newReservation);
+							
+							//newReservation = res.createReservation(newReservation);
+							//res.createReservation(newReservation).getReservationId();
+							//String resId = res.createReservation(newReservation).getReservationId().toString();
+							
+						System.out.println("The confirmation has been made and the confirmation id is "+ res.createReservation(newReservation).getReservationId());
+						System.exit(1);
+							// return to previous screen
+						} else if (userChoice.contentEquals("2")) {
+							break;
+						}
+						
+
+					} else if (userInputCommand.contentEquals("2")) {
+
 						findAvailableReservations();
 
 						// return to previous screen
-					} else if (userChoice.contentEquals("2")) {
+					} else {
+						System.out.println("Please, enter valid input.");
 						break;
+
 					}
-
-				} else if (userInputCommand.contentEquals("2")) {
-
-					findAvailableReservations();
-
-					// return to previous screen
-				} else {
-					 break;
-
-					// DON'T KNOW HOW ASK USER CHOICE HERE
 				}
 			}
 		}
 	}
-	// }
+
+	public void findAvailableReservations() {
+		while(true) {
+			
+		String userInputCampId = menue.getCampgroundIdFromUser();
+			/*
+			 * if (!userInputCampId.contentEquals("1") &&
+			 * !userInputCampId.contentEquals("2") && !userInputCampId.contentEquals("3") &&
+			 * !userInputCampId.contentEquals("4") && !userInputCampId.contentEquals("5") &&
+			 * !userInputCampId.contentEquals("6") && !userInputCampId.contentEquals("7")) {
+			 * 
+			 * System.out.println("Please, enter valid input.");
+			 * 
+			 * }else {
+			 */
+			
+		Long campgroundId = Long.parseLong(userInputCampId);
+		
+		String arrDate = menue.getArrivalDateFromUser();
+		LocalDate fromDate = LocalDate.parse(arrDate);
+			/*
+			 * try { LocalDate fromDate = LocalDate.parse(arrDate);
+			 * 
+			 * 
+			 * }catch(Exception e) { System.out.println("Please, enter valid input."); }
+			 */
+		   
+	
+	
+		String deptDate = menue.getDepartureDateFromUser();
+		LocalDate toDate = LocalDate.parse(deptDate);
+		
+			/*
+			 * try { LocalDate toDate = LocalDate.parse(deptDate);
+			 * 
+			 * }catch(Exception e) { System.out.println("Please, enter valid input."); }
+			 */
+
+		// LocalDate fromDate = LocalDate.of(2020, 03, 05);
+		// LocalDate toDate = LocalDate.of(2020, 03, 18);
+
+		System.out.println("**************************");
+		System.out.println("Site Id" + "  Site # " + " Daily Fee");
+		System.out.println("**************************");
+		for (Site s : res.getAvailableReservaonsOnGivenSite(campgroundId, fromDate, toDate)) {
+			System.out.println(s.getSiteId() + "         " + s.getSiteNumber() + "         " + s.getCost());
+
+			/*
+			 * s.getMaxOccupancy() + "  " + s.isAccessible() + " " + s.getMaxRvLength() +
+			 * "  " + s.isUtilities() + " $" + s.getCost());
+			 */
+		}
+		System.out.println("");
+		}
+	}
+	
 
 	public void getParkInfo() {
 		System.out.println("National Parks: ");
@@ -158,28 +272,6 @@ public class CampgroundCLI {
 			// break;
 		}
 
-	}
-
-	public void findAvailableReservations() {
-
-		String userInputCampId = menue.getCampgroundIdFromUser();
-		String arrDate = menue.getArrivalDateFromUser();
-		String deptDate = menue.getDepartureDateFromUser();
-
-		// parsing user Input
-		Long campgroundId = Long.parseLong(userInputCampId);
-		LocalDate fromDate = LocalDate.parse(arrDate);
-		LocalDate toDate = LocalDate.parse(deptDate);
-		;
-
-		// LocalDate fromDate = LocalDate.of(2020, 03, 05);
-		// LocalDate toDate = LocalDate.of(2020, 03, 18);
-
-		for (Site s : res.getAvailableReservaonsOnGivenSite(campgroundId, fromDate, toDate)) {
-			System.out.println(s.getSiteNumber() + "  " + s.getMaxOccupancy() + "  " + s.isAccessible() + " "
-					+ s.getMaxRvLength() + "  " + s.isUtilities() + " $" + s.getCost());
-
-		}
 	}
 
 	public void reserveSite() {

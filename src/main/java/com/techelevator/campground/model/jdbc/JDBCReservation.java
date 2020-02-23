@@ -92,16 +92,26 @@ public class JDBCReservation implements ReservationDAO {
 	@Override
 	public Reservation createReservation(Reservation newReservation) {
 		Reservation res = new Reservation();
-		String sqlCreateReservation = "INSERT INTO reservation (name) Values (?, ? ,? ,? , ?, ?)";
+		String sqlCreateReservation = "INSERT INTO reservation (reservation_id, site_id ,name, from_date, to_date, create_date) Values (DEFAULT , ? ,? ,? , ?, ?)";
 		
-		String sqlGetNextId = "SELECT nextval('seq_reservation_id')";
-		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlGetNextId);
-		results.next(); // advances to the first row
-		int id = results.getInt(1); // returns the integer value of the first column of table (i.e. index 1)
+		//String sqlGetNextId = "SELECT nextval('reservation_reservation_id_seq')";
+		//SqlRowSet results = jdbcTemplate.queryForRowSet(sqlGetNextId);
+		//results.next(); // advances to the first row
+		
+		//int id = results.getInt("reservation_id"); // returns the integer value of the first column of table (i.e. index 1)
 
-		    res.setReservationId((long)id);
-		jdbcTemplate.update(sqlCreateReservation, newReservation.getReservationId(), newReservation.getSiteId(), newReservation.getNameOfPerson(), newReservation.getFromDate(), 
+		//res.setReservationId((long)id);
+		res.setSiteId(newReservation.getSiteId());
+		res.setNameOfPerson(newReservation.getNameOfPerson());
+		res.setFromDate(newReservation.getFromDate());
+		res.setToDate(newReservation.getToDate());
+		res.setCreateDate(newReservation.getCreateDate());
+		
+		jdbcTemplate.update(sqlCreateReservation,newReservation.getSiteId(), newReservation.getNameOfPerson(), newReservation.getFromDate(), 
 				newReservation.getToDate(), newReservation.getCreateDate());
+		
+		//jdbcTemplate.update(sqlCreateReservation,newReservation.getReservationId(), newReservation.getSiteId(), newReservation.getNameOfPerson(), newReservation.getFromDate(), 
+				//newReservation.getToDate(), newReservation.getCreateDate());
 				
 				return newReservation;
 
@@ -110,12 +120,13 @@ public class JDBCReservation implements ReservationDAO {
 	private Site mapRowToSite(SqlRowSet results) {
 		Site allSites = new Site();
 
-		allSites.setAccessible(results.getBoolean("accessible"));
-		allSites.setUtilities(results.getBoolean("utilities"));
-		allSites.setMaxRvLength(results.getLong("max_rv_length"));
-		allSites.setMaxOccupancy(results.getLong("max_occupancy"));
+		//allSites.setAccessible(results.getBoolean("accessible"));
+		//allSites.setUtilities(results.getBoolean("utilities"));
+		//allSites.setMaxRvLength(results.getLong("max_rv_length"));
+		//allSites.setMaxOccupancy(results.getLong("max_occupancy"));
 		allSites.setSiteNumber(results.getLong("site_number"));
 		allSites.setCost(results.getDouble("daily_fee"));
+		allSites.setSiteId(results.getLong("site_id"));
 
 		return allSites;
 
