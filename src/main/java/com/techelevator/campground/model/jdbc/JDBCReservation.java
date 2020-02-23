@@ -88,21 +88,42 @@ public class JDBCReservation implements ReservationDAO {
 //								+ "ORDER BY site.site_id, campground.name "
 //								+ "LIMIT 5) ";
 
-		String a = "SELECT site.site_number, site.max_occupancy, site.accessible, site.max_rv_length, site.utilities, campground.daily_fee\n"
-				+ "FROM campground\n" + "JOIN site ON campground.campground_id = site.campground_id\n"
-				+ "LEFT JOIN reservation ON reservation.site_id = site.site_id\n"
-				+ "WHERE (reservation.reservation_id IS NULL\n" + "AND campground.campground_id = ?\n"
-				+ "AND EXTRACT (MONTH FROM DATE ?) > CAST (campground.open_from_mm AS INTEGER) AND EXTRACT (MONTH FROM DATE '2020-02-14') < CAST (campground.open_to_mm AS INTEGER)\n"
-				+ ")\n" + "OR (reservation.reservation_id IS NOT NULL\n" + "AND campground.campground_id = 1\n"
-				+ "AND EXTRACT (MONTH FROM DATE '2020-02-08') > CAST (campground.open_from_mm AS INTEGER) AND EXTRACT (MONTH FROM DATE '2020-02-14') < CAST (campground.open_to_mm AS INTEGER)\n"
-				+ "AND site.site_id NOT IN\n" + "(SELECT reservation.site_id\n" + "FROM campground\n"
-				+ "JOIN site ON campground.campground_id = site.campground_id\n"
-				+ "JOIN reservation ON reservation.site_id = site.site_id\n" + "WHERE site.campground_id = 1\n"
-				+ "AND ('2020/02/08' >= reservation.from_date AND '2020/02/08' <= reservation.to_date)\n"
-				+ "OR ('2020/02/14' >= reservation.from_date AND '2020/02/14' <= reservation.to_date)))\n" + "\n"
-				+ "order by site.site_id, campground.name LIMIT 5; ";
+		String sqlGetAvailbleReservations = "SELECT site_id, site_number, daily_fee "+
+											"FROM campground "+
+											"JOIN site USING (campground_id) "+
+											"LEFT JOIN reservation USING (site_id) "+
+											"WHERE campground_id = ? AND site_id NOT IN ( "+
+											"SELECT site_id "+
+											"FROM campground "+
+											"JOIN site USING (campground_id) "+
+											"LEFT JOIN reservation USING (site_id) "+
+											"WHERE campground_id = ? AND (? "+
+											"BETWEEN from_date AND to_date "+
+											"OR ? BETWEEN from_date AND to_date "+
+											"OR (? < from_date AND ? > to_date))) "+
+											"GROUP BY site_id, site_number, daily_fee "+
+											"LIMIT 5";
+		
+		
+		
+//		String a = "SELECT site.site_number, site.max_occupancy, site.accessible, site.max_rv_length, site.utilities, campground.daily_fee\n"
+//				+ "FROM campground\n" + "JOIN site ON campground.campground_id = site.campground_id\n"
+//				+ "LEFT JOIN reservation ON reservation.site_id = site.site_id\n"
+//				+ "WHERE (reservation.reservation_id IS NULL\n" + "AND campground.campground_id = ?\n"
+//				+ "AND EXTRACT (MONTH FROM DATE ?) > CAST (campground.open_from_mm AS INTEGER) AND EXTRACT (MONTH FROM DATE '2020-02-14') < CAST (campground.open_to_mm AS INTEGER)\n"
+//				+ ")\n" + "OR (reservation.reservation_id IS NOT NULL\n" + "AND campground.campground_id = 1\n"
+//				+ "AND EXTRACT (MONTH FROM DATE '2020-02-08') > CAST (campground.open_from_mm AS INTEGER) AND EXTRACT (MONTH FROM DATE '2020-02-14') < CAST (campground.open_to_mm AS INTEGER)\n"
+//				+ "AND site.site_id NOT IN\n" + "(SELECT reservation.site_id\n" + "FROM campground\n"
+//				+ "JOIN site ON campground.campground_id = site.campground_id\n"
+//				+ "JOIN reservation ON reservation.site_id = site.site_id\n" + "WHERE site.campground_id = 1\n"
+//				+ "AND ('2020/02/08' >= reservation.from_date AND '2020/02/08' <= reservation.to_date)\n"
+//				+ "OR ('2020/02/14' >= reservation.from_date AND '2020/02/14' <= reservation.to_date)))\n" + "\n"
+		
+		
+		
+//				+ "order by site.site_id, campground.name LIMIT 5; ";
 
-		SqlRowSet results = jdbcTemplate.queryForRowSet(a, campgroundId, fromDate);// , campgroundId,fromDate, toDate,
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlGetAvailbleReservations, campgroundId,  campgroundId, fromDate, toDate,fromDate, toDate);
 																					// campgroundId, fromDate, toDate,
 																					// campgroundId,fromDate, fromDate,
 																					// toDate, toDate );
