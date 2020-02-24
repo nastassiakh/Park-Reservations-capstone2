@@ -1,6 +1,7 @@
 package com.techelevator;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 import org.apache.commons.dbcp2.BasicDataSource;
@@ -67,6 +68,7 @@ public class CampgroundCLI {
 					&& !userInputParkId.contentEquals("3")) {
 
 				System.out.println("Please, enter valid input.");
+				System.out.println("");
 
 			} else {
 				// print park info
@@ -103,7 +105,7 @@ public class CampgroundCLI {
 						System.out.println("");
 
 						// reservations questions to user String userChoice =
-						String userChoice = menue.getUserChoiceForReservation();//menue.getUserChoiceForReservation();
+						String userChoice = menue.getUserChoiceForReservation();
 						
 						while (true) {
 
@@ -183,6 +185,7 @@ public class CampgroundCLI {
 					System.out.println("");
 
 					// make reservation
+					//while(true) {
 					String siteIdFromUser = menue.getSiteIdFromUser();
 					Long siteId = Long.parseLong(siteIdFromUser);
 					String nameOfPerson = menue.getNameOfUser();
@@ -213,7 +216,20 @@ public class CampgroundCLI {
 	}
 
 	
+	/////asked from Chris o format user String to DateTimeFormatter
+	private LocalDate validDATE(String dateInput) {
+		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+		LocalDate formattedDate = null;
+		try {
+		formattedDate = LocalDate.parse(dateInput, dateTimeFormatter);
+		} catch (Exception e) {
+		System.out.println("\nPlease format as mm/dd/yyy\n");
+
+		    }
+		    return formattedDate;
+		}
 	
+//////////////////////////////////////////////////////////////////////
 	
 	public void printParkInfo() {
 		while (true) {
@@ -275,7 +291,6 @@ public class CampgroundCLI {
 		}
 	}
 
-	// System.out.println(res.findReservationByName(nameOfPerson).get(0).getReservationId());
 
 	public void findCampgrundByNAme() {
 		String campgroundName = "";
