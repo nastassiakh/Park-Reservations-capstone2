@@ -92,7 +92,7 @@ public class JDBCReservation implements ReservationDAO {
 	@Override
 	public Reservation createReservation(Reservation newReservation) {
 		Reservation res = new Reservation();
-		String sqlCreateReservation = "INSERT INTO reservation (reservation_id, site_id ,name, from_date, to_date, create_date) Values (DEFAULT , ? ,? ,? , ?, ?)";
+		String sqlCreateReservation = "INSERT INTO reservation (reservation_id, site_id ,name, from_date, to_date, create_date) Values (DEFAULT, ? ,? ,? , ?, ?)";
 		
 		//String sqlGetNextId = "SELECT nextval('reservation_reservation_id_seq')";
 		//SqlRowSet results = jdbcTemplate.queryForRowSet(sqlGetNextId);
