@@ -97,7 +97,6 @@ public class JDBCReservation implements ReservationDAO {
 		//String sqlGetNextId = "SELECT nextval('reservation_reservation_id_seq')";
 		//SqlRowSet results = jdbcTemplate.queryForRowSet(sqlGetNextId);
 		//results.next(); // advances to the first row
-		
 		//int id = results.getInt("reservation_id"); // returns the integer value of the first column of table (i.e. index 1)
 
 		//res.setReservationId((long)id);
