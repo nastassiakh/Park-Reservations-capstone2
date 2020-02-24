@@ -90,7 +90,7 @@ public class CampgroundCLI {
 
 					// print all campgrounds info in Park
 					if (userInputCommand.contentEquals("1")) {
-						//getAllCampgroundsInPark();
+						// getAllCampgroundsInPark();
 
 						camp.getAllCampgroundsInPark(Long.parseLong(userInputParkId));
 
@@ -106,7 +106,7 @@ public class CampgroundCLI {
 
 						// reservations questions to user String userChoice =
 						String userChoice = menue.getUserChoiceForReservation();
-						
+
 						while (true) {
 
 							if (userChoice.contentEquals("1")) {
@@ -154,15 +154,6 @@ public class CampgroundCLI {
 
 					String arrDate = menue.getArrivalDateFromUser();
 
-					/*
-					 * System.out.println("What is the arrival date (YYYY-MM-DD)?"); String arrDate
-					 * = scan.nextLine();
-					 * 
-					 * while (!scan.hasNext("([0-9]{4})-([0-9]{2})-([0-9]){2}")) {
-					 * System.out.print("That's not a valid date. Enter the date again: ");
-					 * System.out.println(""); break;
-					 */
-
 					String deptDate = menue.getDepartureDateFromUser();
 
 					// parsing user Input
@@ -185,9 +176,23 @@ public class CampgroundCLI {
 					System.out.println("");
 
 					// make reservation
-					//while(true) {
-					String siteIdFromUser = menue.getSiteIdFromUser();
-					Long siteId = Long.parseLong(siteIdFromUser);
+
+					Long siteId = null;
+					while (true) {
+						String siteIdFromUser = menue.getSiteIdFromUser();
+						// Long siteId = Long.parseLong(siteIdFromUser);
+						try {
+							siteId = Long.parseLong(siteIdFromUser);
+							break;
+						} catch (NumberFormatException ex) {
+							// handle exception here
+							System.out.println("Please, enter valid input as a number.");
+							System.out.println("");
+
+						}
+
+					}
+
 					String nameOfPerson = menue.getNameOfUser();
 
 					LocalDate createDate = LocalDate.now();
@@ -199,38 +204,37 @@ public class CampgroundCLI {
 					newReservation.setFromDate(fromDate);
 					newReservation.setToDate(toDate);
 					newReservation.setCreateDate(createDate);
-					
+
 					res.createReservation(newReservation);
 
-					//get res id
+					// get res id
 					for (Reservation r : res.findReservationByName(nameOfPerson)) {
 						Long resId = r.getReservationId();
 
-					System.out.println("The confirmation has been made and the confirmation id is " + resId);
-							//+ res.createReservation(newReservation).getReservationId());
-					System.exit(1);
-					// return to previous screen
-				}
+						System.out.println("The confirmation has been made and the confirmation id is " + resId);
+						// + res.createReservation(newReservation).getReservationId());
+						System.exit(1);
+						// return to previous screen
+					}
 				}
 		}
 	}
 
-	
-	/////asked from Chris o format user String to DateTimeFormatter
+	///// asked from Chris o format user String to DateTimeFormatter
 	private LocalDate validDATE(String dateInput) {
 		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 		LocalDate formattedDate = null;
 		try {
-		formattedDate = LocalDate.parse(dateInput, dateTimeFormatter);
+			formattedDate = LocalDate.parse(dateInput, dateTimeFormatter);
 		} catch (Exception e) {
-		System.out.println("\nPlease format as mm/dd/yyy\n");
+			System.out.println("\nPlease format as mm/dd/yyy\n");
 
-		    }
-		    return formattedDate;
 		}
-	
+		return formattedDate;
+	}
+
 //////////////////////////////////////////////////////////////////////
-	
+
 	public void printParkInfo() {
 		while (true) {
 			System.out.println("National Parks: ");
@@ -268,9 +272,6 @@ public class CampgroundCLI {
 		}
 	}
 
-	
-
-	
 	public void printAllCampgroundsInParkById() {
 		System.out.println(camp.getAllCampgroundsInPark(Long.valueOf(1)).size());
 	}
@@ -290,7 +291,6 @@ public class CampgroundCLI {
 
 		}
 	}
-
 
 	public void findCampgrundByNAme() {
 		String campgroundName = "";
